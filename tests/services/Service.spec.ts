@@ -305,8 +305,8 @@ describe("Tests for Service", () => {
   });
   describe("Service.createGist", () => {
     it("should create a new gist", async () => {
-      const text = jest.fn(() => Promise.resolve(JSON.stringify({ html_url: "gist-url" })));
-      const { restore } = mockFetch({ text });
+      const responseJson = jest.fn(() => Promise.resolve({ html_url: "gist-url" }));
+      const { restore } = mockFetch({ json : responseJson });
       const json = { a: 1, b: 2 };
       const result = await Service.createGist(json);
       expect(window.fetch).toHaveBeenCalledWith("https://api.github.com/gists", {
@@ -336,7 +336,7 @@ describe("Tests for Service", () => {
       const json = jest.fn(() => Promise.resolve({ id }));
       const { restore } = mockFetch({ json });
       const result = await Service.saveJSON({ a: 1, b: 2 } as any, null);
-      expect(window.fetch).toHaveBeenCalledWith("https://studio.nearprotocol.com/api/set-fiddle", {
+      expect(window.fetch).toHaveBeenCalledWith("https://studio.nearprotocol.com/api/fiddle", {
         method: "POST",
         headers: new Headers({ "Content-type": "application/json; charset=utf-8" }),
         body: JSON.stringify({ a: 1, b: 2 })
